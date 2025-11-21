@@ -9,17 +9,26 @@ import {
   NativeSelect,
   Button,
   Input,
+  Stack,
+
 } from "@chakra-ui/react";
-// import { Input } from "@chakra-ui/input";
-// import { Button } from "@chakra-ui/button";
-// import { NativeSelect } from "@chakra-ui/NativeSelect";
+
+import { useColorModeValue } from "@/components/ui/color-mode"
+
+
+import { ChevronUp } from "lucide-react";
+import { ListCard } from "./ListCard";
+
+const statusOptions = ["В ожидании", "Одобрено", "Отказано"];
 
 export const List = () => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState<boolean>(true);
+  const bg = useColorModeValue("gray.300", "gray.500")
+  const text = useColorModeValue("black", "white")
 
   return (
     <Center w="100%" py="10">
-      <Box w="100%" maxW="1200px" bg="gray.900" p="10" borderRadius="2xl">
+      <Box w="100%" maxW="1200px" bg={bg} p="10" borderRadius="2xl">
         <Heading textAlign="center" size="3xl" mb="6">
           Список объявлений
         </Heading>
@@ -31,13 +40,25 @@ export const List = () => {
           alignItems="center"
           mb="4"
         >
-          <Heading size="2xl" cursor="pointer" onClick={() => setOpen(!open)}>
-            Фильтры
-          </Heading>
+          <Box
+            display="flex"
+            alignItems="center"
+            gap="3"
+            cursor="pointer"
+            onClick={() => setOpen(!open)}
+          >
+            <Heading size="2xl">Фильтры</Heading>
+
+            <ChevronUp
+              size={32}
+              className={`transition-transform duration-300 ${open ? "rotate-180" : ""
+                }`}
+            />
+          </Box>
 
           <Button
             variant="ghost"
-            color="blackAlpha.700"
+            color={text}
             onClick={() => console.log("reset")}
           >
             Сбросить
@@ -52,19 +73,22 @@ export const List = () => {
           opacity={open ? 1 : 0}
         >
           <Grid templateColumns="repeat(3, 1fr)" gap="4" mt="4">
+
             {/* Статус */}
             <Box border="2px solid rgba(0,0,0,0.5)" p="4" borderRadius="2xl">
               <Heading size="lg" mb="2">
                 Статус
               </Heading>
-              <Checkbox.Root>
-                <Checkbox.HiddenInput />
-                <Checkbox.Control />
-                <Checkbox.Label>В ожидании</Checkbox.Label>
-              </Checkbox.Root>
-              {/* <Checkbox value="pending"></Checkbox>
-              <Checkbox value="approved">Одобрено</Checkbox>
-              <Checkbox value="rejected">Отклонено</Checkbox> */}
+
+              <Stack align="flex-start" flex="1" gap="4">
+                {statusOptions.map((status) => (
+                  <Checkbox.Root key={status} defaultChecked={false}>
+                    <Checkbox.HiddenInput />
+                    <Checkbox.Control borderColor="whiteAlpha.800" colorPalette={"blue"} />
+                    <Checkbox.Label>{status}</Checkbox.Label>
+                  </Checkbox.Root>
+                ))}
+              </Stack>
             </Box>
 
             {/* Категория */}
@@ -72,6 +96,7 @@ export const List = () => {
               <Heading size="lg" mb="2">
                 Категория
               </Heading>
+
               <NativeSelect.Root>
                 <NativeSelect.Field placeholder="Категория">
                   <option value="1">Ноутбуки</option>
@@ -105,6 +130,14 @@ export const List = () => {
               <Input placeholder="Введите название объявления" />
             </Box>
           </Grid>
+
+
+        </Box>
+        {/* Карточка под фильтрами */}
+        <Box mt="6">
+          <ListCard status="approved" category="Машины" priority="urgent" />
+          <ListCard status="rejected" category="Лодки" priority="normal" />
+          <ListCard status="pending" category="Смартфоны" priority="normal" />
         </Box>
       </Box>
     </Center>
