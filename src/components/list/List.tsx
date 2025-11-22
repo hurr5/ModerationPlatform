@@ -9,12 +9,11 @@ import {
   NativeSelect,
   Button,
   Input,
+  NumberInput,
   Stack,
-
 } from "@chakra-ui/react";
 
-import { useColorModeValue } from "@/components/ui/color-mode"
-
+import { useColorModeValue } from "@/components/ui/color-mode";
 
 import { ChevronUp } from "lucide-react";
 import { ListCard } from "./ListCard";
@@ -23,12 +22,12 @@ const statusOptions = ["В ожидании", "Одобрено", "Отказа�
 
 export const List = () => {
   const [open, setOpen] = useState<boolean>(true);
-  const bg = useColorModeValue("gray.300", "gray.500")
-  const text = useColorModeValue("black", "white")
+  const bg = useColorModeValue("gray.300", "gray.500");
+  const text = useColorModeValue("black", "white");
 
   return (
     <Center w="100%" py="10">
-      <Box w="100%" maxW="1200px" bg={bg} p="10" borderRadius="2xl">
+      <Box w="full" maxW="7xl" bg={bg} p="10" borderRadius="2xl">
         <Heading textAlign="center" size="3xl" mb="6">
           Список объявлений
         </Heading>
@@ -51,8 +50,9 @@ export const List = () => {
 
             <ChevronUp
               size={32}
-              className={`transition-transform duration-300 ${open ? "rotate-180" : ""
-                }`}
+              className={`transition-transform duration-300 ${
+                open ? "rotate-180" : ""
+              }`}
             />
           </Box>
 
@@ -73,7 +73,6 @@ export const List = () => {
           opacity={open ? 1 : 0}
         >
           <Grid templateColumns="repeat(3, 1fr)" gap="4" mt="4">
-
             {/* Статус */}
             <Box border="2px solid rgba(0,0,0,0.5)" p="4" borderRadius="2xl">
               <Heading size="lg" mb="2">
@@ -84,7 +83,10 @@ export const List = () => {
                 {statusOptions.map((status) => (
                   <Checkbox.Root key={status} defaultChecked={false}>
                     <Checkbox.HiddenInput />
-                    <Checkbox.Control borderColor="whiteAlpha.800" colorPalette={"blue"} />
+                    <Checkbox.Control
+                      borderColor="whiteAlpha.800"
+                      colorPalette={"blue"}
+                    />
                     <Checkbox.Label>{status}</Checkbox.Label>
                   </Checkbox.Root>
                 ))}
@@ -111,9 +113,22 @@ export const List = () => {
               <Heading size="lg" mb="2">
                 Цена
               </Heading>
-
-              <Input placeholder="От" type="number" mb="2" />
-              <Input placeholder="До" type="number" />
+              <div className="flex flex-col gap-5">
+                <NumberInput.Root min={0}>
+                  <NumberInput.Control>
+                    <NumberInput.IncrementTrigger />
+                    <NumberInput.DecrementTrigger />
+                  </NumberInput.Control>
+                  <NumberInput.Input placeholder="Сумма от" />
+                </NumberInput.Root>
+                <NumberInput.Root min={0}>
+                  <NumberInput.Control>
+                    <NumberInput.IncrementTrigger />
+                    <NumberInput.DecrementTrigger />
+                  </NumberInput.Control>
+                  <NumberInput.Input placeholder="Сумма до" />
+                </NumberInput.Root>
+              </div>
             </Box>
 
             {/* Поиск */}
@@ -130,8 +145,6 @@ export const List = () => {
               <Input placeholder="Введите название объявления" />
             </Box>
           </Grid>
-
-
         </Box>
         {/* Карточка под фильтрами */}
         <Box mt="6">

@@ -19,10 +19,9 @@ interface ListCardProps {
 
 export const ListCard = ({ status, category, priority }: ListCardProps) => {
   return (
-    <Card.Root p="4" borderRadius="2xl">
+    <Card.Root p="4" my={5} borderRadius="2xl" bg={"blackAlpha.600"}>
       <Card.Body p="0">
         <SimpleGrid columns={4} gap={4} alignItems="center">
-
           {/* Изображение */}
           <Box>
             <Image
@@ -35,7 +34,12 @@ export const ListCard = ({ status, category, priority }: ListCardProps) => {
           </Box>
 
           {/* Центральная часть */}
-          <Box gridColumn="span 2" display="flex" flexDirection="column" gap="2">
+          <Box
+            gridColumn="span 2"
+            display="flex"
+            flexDirection="column"
+            gap="2"
+          >
             <Heading size="lg">Лодка надувная</Heading>
 
             <Text fontWeight="bold">15 000 ₽</Text>
@@ -50,15 +54,15 @@ export const ListCard = ({ status, category, priority }: ListCardProps) => {
                   status === "pending"
                     ? "yellow.400"
                     : status === "approved"
-                      ? "green.400"
-                      : "red.400"
+                    ? "green.400"
+                    : "red.400"
                 }
               >
                 {statusLabels[status]}
               </Text>
 
               {/* Категория */}
-              <Text px="3" py="1" borderRadius="lg" bg="gray.300">
+              <Text px="3" py="1" borderRadius="lg" bg="gray.400">
                 {category}
               </Text>
             </Box>
@@ -79,7 +83,6 @@ export const ListCard = ({ status, category, priority }: ListCardProps) => {
 
             <Button bg="green">Открыть</Button>
           </Box>
-
         </SimpleGrid>
       </Card.Body>
     </Card.Root>
