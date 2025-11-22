@@ -54,8 +54,8 @@ export const ListCard = ({ status, category, priority }: ListCardProps) => {
                   status === "pending"
                     ? "yellow.400"
                     : status === "approved"
-                    ? "green.400"
-                    : "red.400"
+                      ? "green.400"
+                      : "red.400"
                 }
               >
                 {statusLabels[status]}
@@ -77,7 +77,7 @@ export const ListCard = ({ status, category, priority }: ListCardProps) => {
           >
             <Text>Дата создания: 01.01.2025</Text>
 
-            <Text px="3" py="1" borderRadius="lg" bg="red.400">
+            <Text px="3" py="1" borderRadius="lg" bg={priority === "urgent" ? "red.400" : ""}>
               Приоритет {priorityLabels[priority]}
             </Text>
 

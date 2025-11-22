@@ -11,6 +11,8 @@ import {
   Input,
   NumberInput,
   Stack,
+  SimpleGrid,
+  GridItem
 } from "@chakra-ui/react";
 
 import { useColorModeValue } from "@/components/ui/color-mode";
@@ -19,6 +21,7 @@ const statusOptions = ["В ожидании", "Одобрено", "Отказа�
 
 export const Stats = () => {
   const bg = useColorModeValue("gray.300", "gray.500");
+  const statBg = useColorModeValue("whiteAlpha.500", "blackAlpha.500");
   const text = useColorModeValue("black", "white");
 
   return (
@@ -29,7 +32,8 @@ export const Stats = () => {
         </Heading>
         <Box
           display="flex"
-          justifyContent="space-between"
+          justifyContent="flex-start"
+          gap={5}
           alignItems="center"
           mb="4"
         >
@@ -38,6 +42,40 @@ export const Stats = () => {
           <Button variant="outline">7 дней</Button>
           <Button variant="outline">30 дней</Button>
         </Box>
+        <SimpleGrid columns={2} gap={10}>
+          <GridItem colSpan={{ base: 1 }}>
+            <Box bg={statBg} height="60" rounded="xl" p={5}>
+              <Heading size="lg">Проверено</Heading>
+            </Box>
+          </GridItem>
+          <GridItem colSpan={{ base: 1 }}>
+            <Box bg={statBg} height="60" rounded="xl" p={5}>
+              <Heading size="lg">Одобрено</Heading>
+            </Box>
+          </GridItem>
+          <GridItem colSpan={{ base: 1 }}>
+            <Box bg={statBg} height="60" rounded="xl" p={5}>
+              <Heading size="lg">Отклонено</Heading>
+            </Box>
+
+          </GridItem>
+          <GridItem colSpan={{ base: 1 }}>
+            <Box bg={statBg} height="60" rounded="xl" p={5}>
+              <Heading size="lg">Среднее время</Heading>
+            </Box>
+
+          </GridItem>
+          <GridItem colSpan={{ base: 2 }}>
+            <Box bg={statBg} height="60" rounded="xl" p={5}>
+              <Heading size="lg">График активности (x дней)</Heading>
+            </Box>
+          </GridItem>
+          <GridItem colSpan={{ base: 2 }}>
+            <Box bg={statBg} height="60" rounded="xl" p={5}>
+              <Heading size="lg">Распределение решений</Heading>
+            </Box>
+          </GridItem>
+        </SimpleGrid>
       </Box>
     </Center>
   );
