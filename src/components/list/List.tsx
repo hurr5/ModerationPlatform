@@ -47,9 +47,6 @@ export const List = () => {
     setMaxPrice(undefined);
     setSearch("");
 
-    setSortBy(undefined);
-    setSortOrder(undefined);
-
     setPage(1);
   };
 
@@ -105,9 +102,8 @@ export const List = () => {
 
             <ChevronUp
               size={32}
-              className={`transition-transform duration-300 ${
-                open ? "rotate-180" : ""
-              }`}
+              className={`transition-transform duration-300 ${open ? "rotate-180" : ""
+                }`}
             />
           </Box>
 
@@ -255,7 +251,7 @@ export const List = () => {
           <Menu.Root>
             <Menu.Trigger asChild>
               <Button variant="outline" size="sm">
-                Сортировать по
+                Сортировать по: {sortBy}
               </Button>
             </Menu.Trigger>
             <Portal>
@@ -283,7 +279,7 @@ export const List = () => {
           <Menu.Root>
             <Menu.Trigger asChild>
               <Button variant="outline" size="sm">
-                Порядок
+                Порядок: {sortOrder}
               </Button>
             </Menu.Trigger>
             <Portal>
