@@ -195,7 +195,7 @@ export const Item = () => {
           </Box>
 
           <Flex justify="space-between" gap="4">
-            <Button bg="green.500" onClick={() => approve(id)}>
+            <Button colorPalette="green" onClick={() => approve(id)}>
               Одобрить
             </Button>
 

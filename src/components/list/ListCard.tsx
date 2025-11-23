@@ -65,10 +65,10 @@ export const ListCard = ({
                   status === "pending"
                     ? "yellow.400"
                     : status === "approved"
-                    ? "green.400"
-                    : status === "rejected"
-                    ? "red.400"
-                    : "orange.400"
+                      ? "green.400"
+                      : status === "rejected"
+                        ? "red.400"
+                        : "orange.400"
                 }
               >
                 {statusLabels[status]}
@@ -99,7 +99,7 @@ export const ListCard = ({
               Приоритет {priorityLabels[priority]}
             </Text>
 
-            <Button bg="green" onClick={() => navigate(`/item/${id}`)}>
+            <Button colorPalette={"green"} onClick={() => navigate(`/item/${id}`)}>
               Открыть
             </Button>
           </Box>

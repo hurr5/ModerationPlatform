@@ -131,6 +131,7 @@ export const List = () => {
                   <Checkbox.Root
                     key={status.value}
                     defaultChecked={false}
+                    cursor={"pointer"}
                     onCheckedChange={({ checked }) => {
                       setStatus((prev) =>
                         checked
@@ -167,8 +168,9 @@ export const List = () => {
                 }}
               >
                 <Select.HiddenSelect />
-                <Select.Control>
-                  <Select.Trigger>
+                <Select.Control >
+                  <Select.Trigger cursor={"pointer"}
+                  >
                     <Select.ValueText placeholder="Выберите категорию" />
                   </Select.Trigger>
                   <Select.IndicatorGroup>

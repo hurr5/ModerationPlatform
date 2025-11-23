@@ -10,8 +10,6 @@ export const statuses = [
   { value: "pending", label: "Ожидание" },
   { value: "approved", label: "Одобрено" },
   { value: "rejected", label: "Отклонено" },
-  { value: "draft", label: "Ожидает изменений" },
-  { value: "requestChanges", label: "Ожидает изменений" },
 ] as const;
 
 export const sortByLabels = {
