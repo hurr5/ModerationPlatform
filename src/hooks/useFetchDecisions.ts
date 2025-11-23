@@ -1,11 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
+import {
+  fetchDecisions,
+  type FetchDecisionsResponse,
+} from "@/components/utils/api";
+import { periodFormat } from "@/components/utils/periodFormat";
 
-import { fetchAdById } from "@/components/utils/api";
+export const useFetchDecisions = (range: "today" | "week" | "month") => {
+  const { start, end } = periodFormat(range);
 
-export const useFetchDecisions = (id: number) => {
-  return useQuery({
-    queryKey: ["ads", id],
-    queryFn: () => fetchAdById(id),
+  return useQuery<FetchDecisionsResponse>({
+    queryKey: ["decisions", start, end],
+    queryFn: () => fetchDecisions(start, end),
     refetchOnWindowFocus: false,
   });
 };

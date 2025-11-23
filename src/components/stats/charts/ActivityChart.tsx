@@ -1,19 +1,21 @@
+import { useFetchActivity } from "@/hooks/useFetchActivity";
 import { Chart, useChart } from "@chakra-ui/charts";
 import { Bar, BarChart, CartesianGrid, Tooltip, XAxis, YAxis } from "recharts";
 
 export const ActivityChart = () => {
+  const {
+    data: statsData,
+    isLoading: statsIsLoading,
+    error: statsError,
+  } = useFetchActivity("week");
   const chart = useChart({
-    data: [
-      { sales: 63000, month: "June" },
-      { sales: 72000, month: "July" },
-      { sales: 85000, month: "August" },
-      { sales: 79000, month: "September" },
-      { sales: 90000, month: "October" },
-      { sales: 95000, month: "November" },
-      { sales: 88000, month: "December" },
+    data: statsData ?? [],
+    series: [
+      { name: "approved", color: "teal.solid", label: "Одобрено" },
+      { name: "rejected", color: "green.500", label: "Отказано" },
     ],
-    series: [{ name: "sales", color: "teal.solid" }],
   });
+
   return (
     <Chart.Root maxH="sm" chart={chart}>
       <BarChart data={chart.data}>
@@ -21,15 +23,14 @@ export const ActivityChart = () => {
         <XAxis
           axisLine={false}
           tickLine={false}
-          dataKey={chart.key("month")}
-          tickFormatter={(value) => value.slice(0, 3)}
+          dataKey={chart.key("date")}
+          tickFormatter={chart.formatDate({ month: "short", day: "2-digit" })}
         />
         <YAxis
           axisLine={false}
           tickLine={false}
           tickFormatter={chart.formatNumber({
-            style: "currency",
-            currency: "USD",
+            style: "decimal",
             notation: "compact",
           })}
         />

@@ -66,7 +66,9 @@ export const ListCard = ({
                     ? "yellow.400"
                     : status === "approved"
                     ? "green.400"
-                    : "red.400"
+                    : status === "rejected"
+                    ? "red.400"
+                    : "orange.400"
                 }
               >
                 {statusLabels[status]}

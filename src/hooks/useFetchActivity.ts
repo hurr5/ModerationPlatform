@@ -1,5 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchActivity } from "@/components/utils/api";
+import {
+  fetchActivity,
+  type FetchActivityResponse,
+} from "@/components/utils/api";
 import { periodFormat } from "@/components/utils/periodFormat";
 
 export const useFetchActivity = (range: "today" | "week" | "month") => {

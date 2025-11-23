@@ -2,12 +2,16 @@ export const statusLabels = {
   pending: "Ожидание",
   approved: "Одобрено",
   rejected: "Отклонено",
+  draft: "Ожидает изменений",
+  requestChanges: "Ожидает изменений",
 };
 
 export const statuses = [
   { value: "pending", label: "Ожидание" },
   { value: "approved", label: "Одобрено" },
   { value: "rejected", label: "Отклонено" },
+  { value: "draft", label: "Ожидает изменений" },
+  { value: "requestChanges", label: "Ожидает изменений" },
 ] as const;
 
 export const priorityLabels = {

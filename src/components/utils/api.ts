@@ -1,6 +1,6 @@
 import type { Ad, AdStatus } from "@/types/ad";
 import type { Pagination } from "@/types/pagination";
-import type {ActivityStat}from "@/types/charts"
+import type { ActivityStat } from "@/types/charts";
 import { parameters } from "@/constants/ad";
 
 export interface FetchAdsInput {
@@ -36,7 +36,6 @@ export const fetchAds = async (
 
   const url = `${import.meta.env.VITE_API_ENDPOINT}/ads?${params.toString()}`;
 
-  console.log("All ads", url);
   const response = await fetch(url);
 
   if (!response.ok) {
@@ -46,11 +45,80 @@ export const fetchAds = async (
   return response.json();
 };
 
+// Одобрить объявление
+export const approveAd = async (id: string) => {
+  const response = await fetch(
+    `${import.meta.env.VITE_API_ENDPOINT}/ads/${id}/approve`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({}),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Ошибка при одобрении объявления");
+  }
+
+  return response.json();
+};
+
+export interface RejectionData {
+  id: string;
+  reason: string;
+  comment?: string;
+}
+
+// Отказать в публикации
+export const rejectAd = async ({ id, reason, comment }: RejectionData) => {
+  const response = await fetch(
+    `${import.meta.env.VITE_API_ENDPOINT}/ads/${id}/reject`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ reason, comment }),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Ошибка отклонения объявления");
+  }
+
+  return response.json();
+};
+
+// Отправить на доработку
+export const requestAdChanges = async ({
+  id,
+  reason,
+  comment,
+}: RejectionData) => {
+  const response = await fetch(
+    `${import.meta.env.VITE_API_ENDPOINT}/ads/${id}/request-changes`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ reason, comment }),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Ошибка при отправке на доработку");
+  }
+
+  return response.json();
+};
+
 // Получение объявления по ID
 export const fetchAdById = async (id: number): Promise<Ad> => {
   const url = `${import.meta.env.VITE_API_ENDPOINT}/ads/${id}`;
 
-  console.log("Ad by ID", url);
   const response = await fetch(url);
 
   if (!response.ok) {
@@ -59,7 +127,6 @@ export const fetchAdById = async (id: number): Promise<Ad> => {
 
   return response.json();
 };
-
 
 // Получение статистики
 export const fetchStats = async () => {
@@ -77,7 +144,7 @@ export const fetchStats = async () => {
 export type FetchActivityResponse = ActivityStat[];
 
 // График активоности
-export const = async (
+export const fetchActivity = async (
   startDate: string,
   endDate: string
 ): Promise<FetchActivityResponse> => {
@@ -99,8 +166,17 @@ export const = async (
   return response.json();
 };
 
+export interface FetchDecisionsResponse {
+  approved: number;
+  rejected: number;
+  requestChanges: number;
+}
+
 // График решений
-export const fetchDecisions = async (startDate: string, endDate: string) => {
+export const fetchDecisions = async (
+  startDate: string,
+  endDate: string
+): Promise<FetchDecisionsResponse> => {
   const params = new URLSearchParams();
 
   params.append("startDate", startDate);
@@ -113,14 +189,19 @@ export const fetchDecisions = async (startDate: string, endDate: string) => {
   const response = await fetch(url);
 
   if (!response.ok) {
-    throw new Error("Не удалось получить статистику");
+    throw new Error("Не удалось получить решения");
   }
 
   return response.json();
 };
 
+export type FetchCategoriesResponse = Record<string, number>;
+
 // График категорий
-export const fetchCategories = async (startDate: string, endDate: string) => {
+export const fetchCategories = async (
+  startDate: string,
+  endDate: string
+): Promise<FetchCategoriesResponse> => {
   const params = new URLSearchParams();
 
   params.append("startDate", startDate);
@@ -133,7 +214,7 @@ export const fetchCategories = async (startDate: string, endDate: string) => {
   const response = await fetch(url);
 
   if (!response.ok) {
-    throw new Error("Не удалось получить статистику");
+    throw new Error("Не удалось получить категории");
   }
 
   return response.json();

@@ -27,7 +27,7 @@ import { statuses } from "@/constants/ad";
 import type { AdStatus } from "@/types/ad";
 
 export const List = () => {
-  const [open, setOpen] = useState<boolean>(true);
+  const [open, setOpen] = useState<boolean>(false);
 
   const [status, setStatus] = useState<AdStatus[]>([]);
   const [categoryId, setCategoryId] = useState<number>();
@@ -39,6 +39,19 @@ export const List = () => {
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">();
 
   const [page, setPage] = useState<number>(1);
+
+  const resetFilters = () => {
+    setStatus([]);
+    setCategoryId(undefined);
+    setMinPrice(undefined);
+    setMaxPrice(undefined);
+    setSearch("");
+
+    setSortBy(undefined);
+    setSortOrder(undefined);
+
+    setPage(1);
+  };
 
   const categories = createListCollection({
     items: [
@@ -98,11 +111,7 @@ export const List = () => {
             />
           </Box>
 
-          <Button
-            variant="ghost"
-            color={text}
-            onClick={() => console.log("reset")}
-          >
+          <Button variant="ghost" color={text} onClick={resetFilters}>
             Сбросить
           </Button>
         </Box>

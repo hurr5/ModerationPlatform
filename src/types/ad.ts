@@ -1,7 +1,7 @@
 import type { ModerationRecord } from "./moderation";
 import type { Seller } from "./seller";
 
-export type AdStatus = "pending" | "rejected" | "approved";
+export type AdStatus = "pending" | "rejected" | "approved" | "requestChanges";
 
 export type AdPriority = "normal" | "urgent";
 

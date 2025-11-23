@@ -12,29 +12,11 @@ import {
 import { useColorModeValue } from "@/components/ui/color-mode";
 import { ActivityChart, CategoriesChart, DecisionsChart } from "./charts";
 import { useFetchStats } from "@/hooks/useFetchStats";
-import { useFetchActivity } from "@/hooks/useFetchActivity";
-
-const getTodayRange = () => {
-  const today = new Date().toISOString().slice(0, 10);
-  return { start: today, end: today };
-};
-
-const getLastDays = (days: number) => {
-  const end = new Date();
-  const start = new Date();
-  start.setDate(end.getDate() - days);
-
-  return {
-    start: start.toISOString().slice(0, 10),
-    end: end.toISOString().slice(0, 10),
-  };
-};
 
 export const Stats = () => {
   const { data, isLoading, error } = useFetchStats();
-  const { statsData, statsIsLoading, statsError } = useFetchActivity()
 
-  const [range, setRange] = useState<"today" | "week" | "month">("today");
+  const [range, setRange] = useState<"today" | "week" | "month">("week");
 
   const bg = useColorModeValue("gray.300", "gray.500");
   const statBg = useColorModeValue("whiteAlpha.500", "blackAlpha.500");
@@ -42,15 +24,12 @@ export const Stats = () => {
   if (isLoading) return <Heading>Skeleton</Heading>;
   if (error || !data) return <Heading>Ничего не найдено</Heading>;
 
-  console.log(statsData)
-
-
   const periodReviewed =
     range === "today"
       ? data.statistics.todayReviewed
       : range === "week"
-        ? data.statistics.thisWeekReviewed
-        : data.statistics.thisMonthReviewed;
+      ? data.statistics.thisWeekReviewed
+      : data.statistics.thisMonthReviewed;
 
   // Подсчет одобренных и отклоненных объявлений
   const approved = Math.round(
