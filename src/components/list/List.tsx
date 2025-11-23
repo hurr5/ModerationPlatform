@@ -23,7 +23,7 @@ import { ChevronUp, RussianRuble } from "lucide-react";
 import { ListCard } from "./ListCard";
 import { ListPagination } from "./ListPagination";
 
-import { statuses } from "@/constants/ad";
+import { sortByLabels, sortOrderLabels, statuses } from "@/constants/ad";
 import type { AdStatus } from "@/types/ad";
 
 export const List = () => {
@@ -35,8 +35,8 @@ export const List = () => {
   const [maxPrice, setMaxPrice] = useState<number>();
   const [search, setSearch] = useState<string>("");
 
-  const [sortBy, setSortBy] = useState<"createdAt" | "price" | "priority">();
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">();
+  const [sortBy, setSortBy] = useState<"createdAt" | "price" | "priority">("createdAt");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
   const [page, setPage] = useState<number>(1);
 
@@ -251,7 +251,7 @@ export const List = () => {
           <Menu.Root>
             <Menu.Trigger asChild>
               <Button variant="outline" size="sm">
-                Сортировать по: {sortBy}
+                Сортировать по {sortByLabels[sortBy]}
               </Button>
             </Menu.Trigger>
             <Portal>
@@ -279,7 +279,7 @@ export const List = () => {
           <Menu.Root>
             <Menu.Trigger asChild>
               <Button variant="outline" size="sm">
-                Порядок: {sortOrder}
+                Порядок {sortOrderLabels[sortOrder]}
               </Button>
             </Menu.Trigger>
             <Portal>

@@ -14,6 +14,17 @@ export const statuses = [
   { value: "requestChanges", label: "Ожидает изменений" },
 ] as const;
 
+export const sortByLabels = {
+  createdAt: "дате создания",
+  price: "цене",
+  priority: "приоритету",
+}
+
+export const sortOrderLabels = {
+  asc: "по возрастанию",
+  desc: "по убыванию"
+}
+
 export const priorityLabels = {
   urgent: "срочный",
   normal: "обычный",
