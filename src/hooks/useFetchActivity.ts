@@ -1,11 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
+import { fetchActivity } from "@/components/utils/api";
+import { periodFormat } from "@/components/utils/periodFormat";
 
-import { fetchAdById } from "@/components/utils/api";
+export const useFetchActivity = (range: "today" | "week" | "month") => {
+  const { start, end } = periodFormat(range);
 
-export const useFetchActivity = (id: number) => {
-  return useQuery({
-    queryKey: ["ads", id],
-    queryFn: () => fetchAdById(id),
+  return useQuery<FetchActivityResponse>({
+    queryKey: ["activity", start, end],
+    queryFn: () => fetchActivity(start, end),
     refetchOnWindowFocus: false,
   });
 };

@@ -1,5 +1,6 @@
 import type { Ad, AdStatus } from "@/types/ad";
 import type { Pagination } from "@/types/pagination";
+import type {ActivityStat}from "@/types/charts"
 import { parameters } from "@/constants/ad";
 
 export interface FetchAdsInput {
@@ -59,6 +60,7 @@ export const fetchAdById = async (id: number): Promise<Ad> => {
   return response.json();
 };
 
+
 // Получение статистики
 export const fetchStats = async () => {
   const url = `${import.meta.env.VITE_API_ENDPOINT}/moderators/me`;
@@ -72,13 +74,13 @@ export const fetchStats = async () => {
   return response.json();
 };
 
-interface fetchActivityResponse {}
+export type FetchActivityResponse = ActivityStat[];
 
 // График активоности
-export const fetchActivity = async (
+export const = async (
   startDate: string,
   endDate: string
-): Promise<FetchAdsResponse> => {
+): Promise<FetchActivityResponse> => {
   const params = new URLSearchParams();
 
   params.append("startDate", startDate);
