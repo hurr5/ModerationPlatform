@@ -7,17 +7,28 @@ import {
   Card,
   Image,
 } from "@chakra-ui/react";
+import { useNavigate } from "react-router";
 
 import { statusLabels, priorityLabels } from "../../constants/ad";
-import type { AdStatus } from "../../types/ad";
+import type { Ad } from "../../types/ad";
 
 interface ListCardProps {
-  status: AdStatus;
-  category: string;
-  priority: string;
+  ad: Ad;
 }
 
-export const ListCard = ({ status, category, priority }: ListCardProps) => {
+export const ListCard = ({
+  ad: { status, category, priority, title, price, images, createdAt, id },
+}: ListCardProps) => {
+  const navigate = useNavigate();
+
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat("de-DE").format(price);
+  };
+
+  const formatDate = (date: Date) => {
+    return new Date(date).toLocaleDateString("ru-RU");
+  };
+
   return (
     <Card.Root p="4" my={5} borderRadius="2xl" bg={"blackAlpha.600"}>
       <Card.Body p="0">
@@ -25,7 +36,7 @@ export const ListCard = ({ status, category, priority }: ListCardProps) => {
           {/* Изображение */}
           <Box>
             <Image
-              src="https://placehold.co/300x200/cccccc/969696?text=Image+125-1"
+              src={images[0]}
               w="16rem"
               h="8rem"
               borderRadius="lg"
@@ -40,9 +51,9 @@ export const ListCard = ({ status, category, priority }: ListCardProps) => {
             flexDirection="column"
             gap="2"
           >
-            <Heading size="lg">Лодка надувная</Heading>
+            <Heading size="lg">{title}</Heading>
 
-            <Text fontWeight="bold">15 000 ₽</Text>
+            <Text fontWeight="bold">{formatPrice(price)} ₽</Text>
 
             <Box display="flex" gap="3">
               {/* Статус */}
@@ -54,8 +65,8 @@ export const ListCard = ({ status, category, priority }: ListCardProps) => {
                   status === "pending"
                     ? "yellow.400"
                     : status === "approved"
-                      ? "green.400"
-                      : "red.400"
+                    ? "green.400"
+                    : "red.400"
                 }
               >
                 {statusLabels[status]}
@@ -75,13 +86,20 @@ export const ListCard = ({ status, category, priority }: ListCardProps) => {
             alignItems="flex-end"
             gap={3}
           >
-            <Text>Дата создания: 01.01.2025</Text>
+            <Text>Дата создания: {formatDate(createdAt)}</Text>
 
-            <Text px="3" py="1" borderRadius="lg" bg={priority === "urgent" ? "red.400" : ""}>
+            <Text
+              px="3"
+              py="1"
+              borderRadius="lg"
+              bg={priority === "urgent" ? "red.400" : ""}
+            >
               Приоритет {priorityLabels[priority]}
             </Text>
 
-            <Button bg="green">Открыть</Button>
+            <Button bg="green" onClick={() => navigate(`/item/${id}`)}>
+              Открыть
+            </Button>
           </Box>
         </SimpleGrid>
       </Card.Body>

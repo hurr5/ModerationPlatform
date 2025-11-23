@@ -1,4 +1,8 @@
 import { useState } from "react";
+
+import { useParams, useNavigate } from "react-router";
+import { useFetchById } from "@/hooks/useFetchById";
+
 import {
   Box,
   Center,
@@ -12,41 +16,72 @@ import {
   Carousel,
   IconButton,
   DataList,
+  Skeleton,
 } from "@chakra-ui/react";
 import { LuArrowLeft, LuArrowRight } from "react-icons/lu";
 
 import { useColorModeValue } from "@/components/ui/color-mode";
-
-const arr = [
-  "https://placehold.co/300x200/cccccc/969696?text=Image+125-1",
-  "https://placehold.co/300x200/cccccc/969696?text=Image+125-2",
-  "https://placehold.co/300x200/cccccc/969696?text=Image+125-3",
-];
-
-const characteristics = {
-  Состояние: "Хорошее",
-  Гарантия: "Частичная",
-  Производитель: "Бренд R",
-  Модель: "Модель 10",
-  Цвет: "Белый",
-};
+import { ArrowLeft, ArrowRight, House } from "lucide-react";
+import { statusLabels } from "@/constants/ad";
 
 export const Item = () => {
-  const bg = useColorModeValue("gray.300", "gray.500");
+  const navigate = useNavigate();
+  const { id } = useParams();
+
+  const { data, error, isLoading } = useFetchById(parseInt(id ?? ""));
+
+  console.log(data);
+
+  const mainBg = useColorModeValue("gray.300", "gray.500");
+  const secondaryBg = useColorModeValue("gray.100", "gray.700");
   const text = useColorModeValue("black", "white");
+
+  const formatDate = (date: Date) => {
+    return new Date(date).toLocaleDateString("ru-RU");
+  };
+
+  const formatDateTime = (date: Date) => {
+    return new Date(date).toLocaleDateString("ru-RU", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
+  if (isLoading) {
+    return <Heading>Skeleton</Heading>;
+  }
+
+  if (error || !data || !id) {
+    return <Heading>Ничего не найдено</Heading>;
+  }
 
   return (
     <Center w="100%" py="10">
-      <Box w="full" maxW="7xl" bg={bg} p="10" borderRadius="2xl" shadow="lg">
+      <Box
+        w="full"
+        maxW="7xl"
+        bg={mainBg}
+        p="10"
+        borderRadius="2xl"
+        shadow="lg"
+      >
         <Heading textAlign="center" size="2xl" mb="6">
-          Название объявления
+          {data.title}
         </Heading>
 
-        {/* Первая строка: Слайдер + История модерации */}
+        {/* Слайдер + История модерации */}
         <SimpleGrid columns={2} gap={6} mb="6">
           {/* Слайдер */}
           <Box borderRadius="2xl" p="4">
-            <Carousel.Root slideCount={arr.length} maxW="xl" mx="auto" gap="4">
+            <Carousel.Root
+              slideCount={data.images.length}
+              maxW="xl"
+              mx="auto"
+              gap="4"
+            >
               <Carousel.Control justifyContent="center" gap="4" width="full">
                 <Carousel.PrevTrigger asChild>
                   <IconButton size="xs" variant="outline">
@@ -55,7 +90,7 @@ export const Item = () => {
                 </Carousel.PrevTrigger>
 
                 <Carousel.ItemGroup width="full">
-                  {arr.map((src, idx) => (
+                  {data.images.map((src, idx) => (
                     <Carousel.Item key={idx} index={idx}>
                       <Image
                         key={idx}
@@ -78,65 +113,40 @@ export const Item = () => {
 
               <Carousel.Indicators />
             </Carousel.Root>
-            {/* <Carousel
-              onChange={(index) => setCurrentIndex(index)}
-              slideCount={arr.length}
-              currentIndex={currentIndex}
-              showArrows
-              width="100%"
-              height="200px"
-            >
-            </Carousel> */}
           </Box>
 
           {/* История модерации */}
-          <Box
-            bg={useColorModeValue("gray.100", "gray.700")}
-            borderRadius="2xl"
-            p="4"
-          >
+          <Box bg={secondaryBg} borderRadius="2xl" p="4">
             <Heading size="md" mb="2">
               История модерации
             </Heading>
             <Stack>
-              <Text>01.01.2025 - Одобрено</Text>
-              <Text>02.01.2025 - Изменено описание</Text>
-              <Text>03.01.2025 - Приоритет изменен</Text>
+              {data && data.moderationHistory.length > 0 ? (
+                data.moderationHistory.map((el, idx) => (
+                  <Box key={idx}>
+                    <Heading>Имя модератора: {el.moderatorName}</Heading>
+                    <Text>Дата проверки: {formatDateTime(el.timestamp)}</Text>
+                    <Text>Результат проверки: {statusLabels[el.action]}</Text>
+                    <Text>Комментарий: {el.comment}</Text>
+                  </Box>
+                ))
+              ) : (
+                <Text textStyle="4xl">Нет истории изменений</Text>
+              )}
             </Stack>
           </Box>
         </SimpleGrid>
 
-        {/* Вторая строка: Подробное описание */}
-        <Box
-          mb="6"
-          bg={useColorModeValue("gray.100", "gray.700")}
-          borderRadius="2xl"
-          p="4"
-        >
+        {/* Подробное описание */}
+        <Box mb="6" bg={secondaryBg} borderRadius="2xl" p="4">
           <Heading size="md" mb="5">
             Описание объявления
           </Heading>
           {/* Описание */}
           <Text fontSize="md">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Odio
-            officiis quas saepe totam! Pariatur corporis exercitationem aperiam
-            voluptas incidunt, est perferendis officia amet eaque possimus! Eum,
-            ab tenetur. Nam, laudantium. Nisi tempora, nobis soluta consequuntur
-            saepe natus, cumque ut quibusdam mollitia reprehenderit commodi
-            libero animi? Quos doloribus facilis rem adipisci, ex nesciunt
-            officiis culpa nobis incidunt perferendis in, excepturi voluptatem.
-            Aperiam voluptatibus quo ipsa quidem culpa! Eaque minus totam in,
-            doloremque alias tempora expedita fugiat! Rem libero totam nihil
-            illo accusamus, perspiciatis ducimus fuga qui? Debitis, doloremque.
-            Ex, necessitatibus accusantium? Laudantium animi placeat distinctio
-            voluptatibus soluta, enim dolores quod temporibus cupiditate cum
-            voluptates cumque, omnis perferendis fugiat, deleniti possimus sit
-            nesciunt eos blanditiis dicta. Obcaecati rem tempora laboriosam
-            fugit officia! Consequuntur, itaque odit. Cumque velit asperiores
-            doloremque consequuntur necessitatibus dolore, provident ducimus
-            iure aspernatur rerum et magni, corporis perspiciatis repellat
-            minima exercitationem obcaecati placeat, beatae molestias natus in
-            voluptatibus illum?
+            {data && data.description
+              ? data.description
+              : "Описание отсутствует"}
           </Text>
 
           {/* Характеристики */}
@@ -145,7 +155,7 @@ export const Item = () => {
           </Heading>
 
           <DataList.Root orientation="horizontal">
-            {Object.entries(characteristics).map(([key, value]) => (
+            {Object.entries(data.characteristics).map(([key, value]) => (
               <DataList.Item key={key} colorPalette="green">
                 <DataList.ItemLabel color="white">{key}</DataList.ItemLabel>
                 <DataList.ItemLabel color="white">{value}</DataList.ItemLabel>
@@ -157,17 +167,46 @@ export const Item = () => {
           <Heading size="md" my="5">
             Информация о продавце
           </Heading>
-          <Text>Имя продавца</Text>
-          <Text>Рейтинг продавца</Text>
-          <Text>Количество объявлений</Text>
-          <Text>Дата регистрации</Text>
+          <Text textStyle="lg">Имя продавца</Text>
+          <Text textStyle="md">{data.seller.name}</Text>
+          <Text textStyle="lg">Рейтинг продавца</Text>
+          <Text textStyle="md">{data.seller.rating}</Text>
+          <Text textStyle="lg">Количество объявлений</Text>
+          <Text textStyle="md">{data.seller.totalAds}</Text>
+          <Text textStyle="lg">Дата регистрации</Text>
+          <Text textStyle="md">{formatDate(data.seller.registeredAt)}</Text>
         </Box>
 
-        {/* Третья строка: Кнопки управления */}
         <Flex justify="space-between" gap="4">
           <Button bg="green.500">Одобрить</Button>
           <Button bg="yellow.500">Редактировать</Button>
           <Button bg="red.500">Удалить</Button>
+        </Flex>
+
+        <Flex justify="space-between" gap="4" mt={10}>
+          <Button bg="whiteAlpha.500" onClick={() => navigate(`/list`)}>
+            К списку <House />
+          </Button>
+          <Flex justify="space-between" gap="4">
+            <Button
+              bg="whiteAlpha.500"
+              onClick={() => {
+                navigate(`/item/${parseInt(id) - 1}`);
+                window.scrollTo({ top: 0, behavior: "instant" });
+              }}
+            >
+              <ArrowLeft />
+            </Button>
+            <Button
+              bg="whiteAlpha.500"
+              onClick={() => {
+                navigate(`/item/${parseInt(id) + 1}`);
+                window.scrollTo({ top: 0, behavior: "instant" });
+              }}
+            >
+              <ArrowRight />
+            </Button>
+          </Flex>
         </Flex>
       </Box>
     </Center>

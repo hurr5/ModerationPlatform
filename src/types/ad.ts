@@ -1,18 +1,16 @@
+import type { ModerationRecord } from "./moderation";
 import type { Seller } from "./seller";
 
 export type AdStatus = "pending" | "rejected" | "approved";
 
 export type AdPriority = "normal" | "urgent";
 
-type Dict = {
-  [key: string]: string;
-};
-
-export type Ad = {
+export interface Ad {
   id: number;
   title: string;
-  desiption: string;
+  description: string;
   price: number;
+  category: string;
   categoryId: number;
   status: AdStatus;
   priority: AdPriority;
@@ -20,5 +18,6 @@ export type Ad = {
   updatedAt: Date;
   images: string[];
   seller: Seller;
-  characteristics: Dict;
-};
+  characteristics: Record<string, string>;
+  moderationHistory: ModerationRecord[];
+}
