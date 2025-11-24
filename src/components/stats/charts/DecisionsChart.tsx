@@ -7,8 +7,8 @@ export const DecisionsChart = () => {
 
   const chart = useChart({
     data: [
-      { name: "Одобрено", value: data?.approved, color: "green.solid" },
-      { name: "Отказано", value: data?.rejected, color: "red.solid" },
+      { name: "Одобрено", value: data?.approved ?? 0, color: "green.solid" },
+      { name: "Отказано", value: data?.rejected ?? 0, color: "red.solid" },
     ],
   });
 
@@ -24,6 +24,7 @@ export const DecisionsChart = () => {
           labelLine={false}
           label={({ name, index }) => {
             const { value } = chart.data[index ?? -1];
+            if (value === undefined) return `${name}: 0%`;
             const percent = value / chart.getTotal("value");
             return `${name}: ${(percent * 100).toFixed(1)}%`;
           }}

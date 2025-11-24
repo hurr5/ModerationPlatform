@@ -75,7 +75,9 @@ export const Modal = ({ label, bgColor, type, onSubmit }: ModalProps) => {
                 <RadioGroup.Root
                   value={reason}
                   onValueChange={(details) => {
-                    setReason(details.value);
+                    if (details.value) {
+                      setReason(details.value);
+                    }
                   }}
                 >
                   <Flex direction="column" gap={3}>

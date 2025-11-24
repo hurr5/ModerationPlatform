@@ -5,8 +5,6 @@ import { Bar, BarChart, CartesianGrid, Tooltip, XAxis, YAxis } from "recharts";
 export const ActivityChart = () => {
   const {
     data: statsData,
-    isLoading: statsIsLoading,
-    error: statsError,
   } = useFetchActivity("week");
   const chart = useChart({
     data: statsData ?? [],

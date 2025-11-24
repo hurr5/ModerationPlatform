@@ -23,6 +23,23 @@ VITE_API_ENDPOINT=http://localhost:3001/api/v1
 ### 3. Запуск API сервера
 
 Перейдите в папку `server` (или `../backend`) и запустите сервер:
+1. Установите сервер из репозитория:
+`https://github.com/avito-tech/tech-internship/tree/main/Tech%20Internships/Frontend/Frontend-trainee-assignment-autumn-2025/tech-int3-server`
+2. Перейдите в директорию сервера и установите зависимости, затем запустите сервер:
+```bash
+# Переход в директорию сервера
+cd tech-int3-server
+
+# Установка зависимостей
+npm install
+
+# Запуск сервера
+npm start
+
+# Или запуск в режиме разработки с автоматической перезагрузкой
+npm run dev
+```
+**3. Если браузер выдает ошибку CORS, то замените код в `server.js` на указанный в примечаниях под 3 пунктом**
 
 ```bash
 cd ../backend
@@ -59,12 +76,12 @@ ModerationPlatform/
 │   │   ├── item/        # Компоненты для просмотра объявления
 │   │   ├── list/        # Компоненты списка объявлений
 │   │   ├── stats/       # Компоненты статистики и графиков
-│   │   └── ui/          # Переиспользуемые UI компоненты
+│   │   └── ui/          # Файлы создаваемые Chakra UI
+│   │   └── constants/   # Словари для перевода статусов и других данных
 │   ├── hooks/           # Custom React hooks
 │   ├── types/           # TypeScript типы
 │   ├── constants/       # Константы приложения
 │   └── App.tsx          # Главный компонент
-├── server/              # API сервер (Express.js)
 └── package.json
 ```
 
@@ -145,7 +162,7 @@ ModerationPlatform/
 - Убедитесь, что API сервер запущен перед запуском фронтенда
 - Для корректной работы приложения необходим доступ к API endpoint, указанному в переменной окружения `VITE_API_ENDPOINT`
 - При использовании своего API, не забудьте настроить CORS:
-`backend/server.js
+`backend/server.js`
 ```server.js
 const express = require('express');
 const path = require('path');

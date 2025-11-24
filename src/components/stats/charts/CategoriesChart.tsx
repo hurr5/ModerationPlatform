@@ -5,7 +5,7 @@ import { useMemo } from "react";
 export const CategoriesChart = () => {
   const { data, isLoading, error } = useFetchCategories("month");
 
-  const chartData: BarListData = useMemo(() => {
+  const chartData: BarListData[] = useMemo(() => {
     if (!data) return [];
 
     return Object.entries(data).map(([name, value]) => ({
