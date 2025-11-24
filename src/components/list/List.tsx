@@ -35,7 +35,9 @@ export const List = () => {
   const [maxPrice, setMaxPrice] = useState<number>();
   const [search, setSearch] = useState<string>("");
 
-  const [sortBy, setSortBy] = useState<"createdAt" | "price" | "priority">("createdAt");
+  const [sortBy, setSortBy] = useState<"createdAt" | "price" | "priority">(
+    "createdAt"
+  );
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
   const [page, setPage] = useState<number>(1);
@@ -102,8 +104,9 @@ export const List = () => {
 
             <ChevronUp
               size={32}
-              className={`transition-transform duration-300 ${open ? "rotate-180" : ""
-                }`}
+              className={`transition-transform duration-300 ${
+                open ? "rotate-180" : ""
+              }`}
             />
           </Box>
 
@@ -168,9 +171,8 @@ export const List = () => {
                 }}
               >
                 <Select.HiddenSelect />
-                <Select.Control >
-                  <Select.Trigger cursor={"pointer"}
-                  >
+                <Select.Control>
+                  <Select.Trigger cursor={"pointer"}>
                     <Select.ValueText placeholder="Выберите категорию" />
                   </Select.Trigger>
                   <Select.IndicatorGroup>
